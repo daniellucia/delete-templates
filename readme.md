@@ -1,4 +1,4 @@
-#Eliminador de themes de WordPress
+# Eliminador de themes de WordPress
 
 ¿Estás cansado de tener que entrar por FTP para eliminar themes de tu sitio web de WordPress? ¡Tengos la solución para ti! He creado un plugin que te permite borrar tus themes directamente desde el administrador de WordPress, sin necesidad de acceder por FTP.
 
