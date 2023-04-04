@@ -2,7 +2,7 @@
 
 /*
  * Plugin Name:       Eliminador de plantillas
- * Plugin URI:        http://www.daniellucia.es/
+ * Plugin URI:        https://github.com/daniellucia/delete-templates
  * Description:       Elimina de manera sencilla las themes no usados
  * Version:           0.0.1
  * Requires at least: 5.2
