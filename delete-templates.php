@@ -130,7 +130,7 @@ function delete_themes_options_page_html()
         ?>
         <style type="text/css">
             .wp-list-table.themes .column-screenshot {
-                width: 80px !important;
+                width: 120px !important;
                 overflow: hidden;
                 text-align: center;
             }

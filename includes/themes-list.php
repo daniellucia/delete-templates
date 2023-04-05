@@ -56,7 +56,7 @@ class Themes_List  extends WP_List_Table
                 if ($item[$column_name] == '') {
                     return '';
                 }
-                return "<img src='{$item[$column_name]}' alt='{$item['name']}' style='height: auto;width: 50px;'/>";
+                return "<img src='{$item[$column_name]}' alt='{$item['name']}' style='height: auto;width: 70px;'/>";
 
             case 'status':
                 $url = $this->get_url_delete($item['slug']);
