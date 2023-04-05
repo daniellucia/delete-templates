@@ -128,6 +128,13 @@ function delete_themes_options_page_html()
         $themes_list->prepare_items();
         $themes_list->display();
         ?>
+        <style type="text/css">
+            .wp-list-table.themes .column-screenshot {
+                width: 80px !important;
+                overflow: hidden;
+                text-align: center;
+            }
+        </style>
     </div>
 <?php
 }
@@ -150,8 +157,18 @@ if (!function_exists('delete_themes_get_list')) {
 
         foreach ($themes as $slug => $theme) {
 
+            $screenshot = '';
+            if (file_exists(get_theme_root() . '/' . $slug . '/screenshot.jpg')) {
+                $screenshot = esc_url(get_theme_root_uri() . '/' . $slug . '/screenshot.jpg?ver=' . $theme->get('Version'));
+            }
+
+            if (file_exists(get_theme_root() . '/' . $slug . '/screenshot.png')) {
+                $screenshot = esc_url(get_theme_root_uri() . '/' . $slug . '/screenshot.png?ver=' . $theme->get('Version'));
+            }
+
             $response[$slug] = [
                 'name' => $theme->get('Name'),
+                'screenshot' => $screenshot,
                 'author' => $theme->get('Author'),
                 'version' => $theme->get('Version'),
                 'slug' => $slug,
