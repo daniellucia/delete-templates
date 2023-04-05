@@ -50,6 +50,15 @@ if (is_admin()) {
     }
 }
 
+if (!function_exists('delete_themes_load_textdomain')) {
+    function delete_themes_load_textdomain()
+    {
+        load_plugin_textdomain('delete-templates', false, dirname(plugin_basename(__FILE__)) . '/languages');
+    }
+
+    add_action('init', 'delete_themes_load_textdomain');
+}
+
 if (!function_exists('delete_themes_check_execute')) {
     function delete_themes_check_execute()
     {
