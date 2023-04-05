@@ -5,8 +5,8 @@ class Themes_List  extends WP_List_Table
 {
 
     private $themes;
-    private $items;
-    private $_column_headers;
+    public $items;
+    public $_column_headers;
 
     public function __construct(array $themes)
     {
