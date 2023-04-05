@@ -18,6 +18,7 @@
 
 define('DELETE_THEMES_VERSION', '0.0.1');
 define('DELETE_THEMES_PARAM', 'delete-item');
+define('DELETE_THEMES_PARAM_RESPONSE', 'delete-item-response');
 define('DELETE_THEMES_URL', 'themes.php?page=delete-themes');
 
 if (!class_exists('WP_List_Table')) {
@@ -25,6 +26,7 @@ if (!class_exists('WP_List_Table')) {
 }
 
 require_once(plugin_dir_path(__FILE__) . 'includes/themes-list.php');
+require_once(plugin_dir_path(__FILE__) . 'includes/messages.php');
 
 if (is_admin()) {
     add_action('admin_menu', 'delete_themes_options_page');
@@ -53,14 +55,26 @@ if (!function_exists('delete_themes_check_execute')) {
     {
         $themes = delete_themes_get_list();
 
-        if (isset($_GET[DELETE_THEMES_PARAM])) {
+        if (isset($_REQUEST[DELETE_THEMES_PARAM])) {
 
-            if (!wp_verify_nonce($_REQUEST['nonce'], $_GET[DELETE_THEMES_PARAM])) {
-                wp_die("Operación no permitida");
+            $url = DELETE_THEMES_URL . '&' . DELETE_THEMES_PARAM_RESPONSE . '=0';
+
+            if (!wp_verify_nonce($_REQUEST['nonce'], $_REQUEST[DELETE_THEMES_PARAM])) {
+                wp_redirect($url);
             }
 
-            if (delete_themes_execute($_GET[DELETE_THEMES_PARAM], $themes)) {
-                wp_redirect(DELETE_THEMES_URL);
+            if (delete_themes_execute($_REQUEST[DELETE_THEMES_PARAM], $themes)) {
+                $url = DELETE_THEMES_URL . '&' . DELETE_THEMES_PARAM_RESPONSE . '=1';
+            }
+
+            wp_redirect($url);
+        }
+
+        if (isset($_REQUEST[DELETE_THEMES_PARAM_RESPONSE])) {
+            if ((int)$_REQUEST[DELETE_THEMES_PARAM_RESPONSE] == 1) {
+                add_action('admin_notices', 'delete_themes_notice__success');
+            } else {
+                add_action('admin_notices', 'delete_themes_notice__error');
             }
         }
     }
