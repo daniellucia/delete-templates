@@ -57,6 +57,6 @@ class Themes_List  extends WP_List_Table
         $url = DELETE_THEMES_URL;
         $param = DELETE_THEMES_PARAM;
         $path = "$url&$param=$slug";
-        return admin_url($path);
+        return wp_nonce_url(admin_url($path), $slug, 'nonce');
     }
 }
