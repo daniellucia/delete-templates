@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Eliminador de plantillas\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-05 09:10+0000\n"
-"PO-Revision-Date: 2023-04-05 09:19+0000\n"
+"PO-Revision-Date: 2023-04-05 09:36+0000\n"
 "Last-Translator: \n"
 "Language-Team: English (United States)\n"
 "Language: en_US\n"
@@ -19,7 +19,7 @@ msgstr ""
 msgid "An error occurred while deleting the theme"
 msgstr "An error occurred while deleting the theme"
 
-#: includes/themes-list.php:25
+#: includes/themes-list.php:27
 msgid "Author"
 msgstr "Author"
 
@@ -27,7 +27,7 @@ msgstr "Author"
 msgid "Daniel Lucia"
 msgstr "Daniel Lucia"
 
-#: includes/themes-list.php:27 includes/themes-list.php:51
+#: includes/themes-list.php:29 includes/themes-list.php:53
 msgid "Delete"
 msgstr "Delete"
 
@@ -43,7 +43,7 @@ msgstr "http://www.daniellucia.es/"
 msgid "https://github.com/daniellucia/delete-templates"
 msgstr "https://github.com/daniellucia/delete-templates"
 
-#: includes/themes-list.php:24
+#: includes/themes-list.php:26
 msgid "Name"
 msgstr "Name"
 
@@ -52,17 +52,26 @@ msgid "Theme deleted successfully"
 msgstr "Theme deleted successfully"
 
 #. Name of the plugin
+#: delete-templates.php:37 delete-templates.php:38
 msgid "Theme remover"
 msgstr "Theme remover"
 
-#: includes/themes-list.php:51
+#: includes/themes-list.php:53
 msgid "This theme is active and cannot be deleted."
 msgstr "This theme is active and cannot be deleted."
 
-#: includes/themes-list.php:26
+#: includes/themes-list.php:28
 msgid "Version"
 msgstr "Version"
 
-#: includes/themes-list.php:51
+#: delete-templates.php:102
+msgid ""
+"You must bear in mind that deleting a theme cannot be recovered. We "
+"recommend making a backup whenever possible."
+msgstr ""
+"You must bear in mind that deleting a theme cannot be recovered. We "
+"recommend making a backup whenever possible."
+
+#: includes/themes-list.php:53
 msgid "You're sure? This action can not be undone"
 msgstr "You're sure? This action can not be undone"
