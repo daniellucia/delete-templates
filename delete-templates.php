@@ -28,6 +28,9 @@ if (!class_exists('WP_List_Table')) {
 require_once(plugin_dir_path(__FILE__) . 'includes/themes-list.php');
 require_once(plugin_dir_path(__FILE__) . 'includes/messages.php');
 
+/**
+ * Solo mostramos el menú si es administrador
+ */
 if (is_admin()) {
 
     /**
@@ -67,6 +70,10 @@ if (!function_exists('delete_themes_check_execute')) {
         if (isset($_REQUEST[DELETE_THEMES_PARAM])) {
 
             $url = DELETE_THEMES_URL . '&' . DELETE_THEMES_PARAM_RESPONSE . '=0';
+
+            if (!is_admin()) {
+                wp_redirect($url);
+            }
 
             if (!wp_verify_nonce($_REQUEST['nonce'], $_REQUEST[DELETE_THEMES_PARAM])) {
                 wp_redirect($url);
