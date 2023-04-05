@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * Plugin Name:       Theme remover
  * Plugin URI:        https://github.com/daniellucia/delete-templates
  * Description:       Easily delete unused themes
