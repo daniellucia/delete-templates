@@ -24,7 +24,7 @@ if (!class_exists('WP_List_Table')) {
     require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
 }
 
-require_once(plugin_dir_path(__FILE__) . 'inc/themes-list.php');
+require_once(plugin_dir_path(__FILE__) . 'includes/themes-list.php');
 
 if (is_admin()) {
     add_action('admin_menu', 'delete_themes_options_page');
