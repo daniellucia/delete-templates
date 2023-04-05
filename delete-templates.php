@@ -4,7 +4,7 @@
  * Plugin Name:       Eliminador de plantillas
  * Plugin URI:        https://github.com/daniellucia/delete-templates
  * Description:       Elimina de manera sencilla las themes no usados
- * Version:           0.0.1
+ * Version:           1.0.0
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Daniel Lucia
