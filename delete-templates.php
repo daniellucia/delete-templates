@@ -34,8 +34,8 @@ if (is_admin()) {
     {
         add_submenu_page(
             'themes.php',
-            'Eliminador de themes',
-            'Eliminador de themes',
+            __('Theme remover', 'delete-templates'),
+            __('Theme remover', 'delete-templates'),
             'manage_options',
             'delete-themes',
             'delete_themes_options_page_html',
