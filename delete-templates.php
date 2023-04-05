@@ -99,6 +99,7 @@ function delete_themes_options_page_html()
 ?>
     <div class="wrap">
         <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
+        <p style="margin: 0;"><?php echo __('You must bear in mind that deleting a theme cannot be recovered. We recommend making a backup whenever possible.', 'delete-templates'); ?></p>
         <?php
         $themes_list->prepare_items();
         $themes_list->display();
