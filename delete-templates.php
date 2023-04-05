@@ -134,6 +134,21 @@ function delete_themes_options_page_html()
                 overflow: hidden;
                 text-align: center;
             }
+
+            .wp-list-table.themes .column-status {
+                width: 120px !important;
+                overflow: hidden;
+                text-align: center;
+            }
+
+            .wp-list-table.themes .column-version {
+                width: 120px !important;
+            }
+
+            .wp-list-table.themes .column-status a {
+                color: #a94040;
+                text-decoration: underline;
+            }
         </style>
     </div>
 <?php
