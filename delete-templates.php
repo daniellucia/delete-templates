@@ -48,15 +48,6 @@ if (is_admin()) {
     }
 
     add_action('admin_menu', 'delete_themes_options_page');
-
-
-    function delete_themes_register_param()
-    {
-        global $wp;
-        $wp->add_query_var(DELETE_THEMES_PARAM);
-    }
-
-    add_action('init', 'delete_themes_register_param');
 }
 
 if (!function_exists('delete_themes_load_textdomain')) {
