@@ -1,0 +1,68 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Eliminador de plantillas\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-04-05 09:07+0000\n"
+"PO-Revision-Date: 2023-04-05 09:11+0000\n"
+"Last-Translator: \n"
+"Language-Team: Español\n"
+"Language: es_ES\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.6.4; wp-6.2\n"
+"X-Domain: delete-templates"
+
+#: includes/messages.php:18
+msgid "An error occurred while deleting the theme"
+msgstr "Ha ocurrido un error al borrar el theme"
+
+#: includes/themes-list.php:25
+msgid "Author"
+msgstr "Autor"
+
+#. Author of the plugin
+msgid "Daniel Lucia"
+msgstr "Daniel Lucia"
+
+#: includes/themes-list.php:27 includes/themes-list.php:51
+msgid "Delete"
+msgstr "Borrar"
+
+#. Description of the plugin
+msgid "Easily delete unused themes"
+msgstr "Elimina de manera sencilla las themes no usados"
+
+#. Author URI of the plugin
+msgid "http://www.daniellucia.es/"
+msgstr ""
+
+#. URI of the plugin
+msgid "https://github.com/daniellucia/delete-templates"
+msgstr ""
+
+#: includes/themes-list.php:24
+msgid "Name"
+msgstr "Nombre"
+
+#: includes/messages.php:8
+msgid "Theme deleted successfully"
+msgstr "Theme borrado correctamente"
+
+#. Name of the plugin
+msgid "Theme remover"
+msgstr "Eliminador de plantillas"
+
+#: includes/themes-list.php:51
+msgid "This theme is active and cannot be deleted."
+msgstr "Este theme está activo y no puede ser borrado"
+
+#: includes/themes-list.php:26
+msgid "Version"
+msgstr "Versión"
+
+#: includes/themes-list.php:51
+msgid "You're sure? This action can not be undone"
+msgstr "¿Estás seguro? Esta acción no se puede deshacer"
