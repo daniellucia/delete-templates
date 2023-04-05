@@ -153,7 +153,7 @@ if (!function_exists('delete_themes_execute')) {
 }
 
 
-if (!function_Exists('delete_themes_remove_recursive')) {
+if (!function_exists('delete_themes_remove_recursive')) {
     function delete_themes_remove_recursive($directory)
     {
         $iterator = new RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory, \FilesystemIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST);
