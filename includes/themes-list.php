@@ -1,6 +1,8 @@
 <?php
 
-
+/**
+ * Clase para mostrar el listado de themes
+ */
 class Themes_List  extends WP_List_Table
 {
 

@@ -54,6 +54,11 @@ if (is_admin()) {
 }
 
 if (!function_exists('delete_themes_load_textdomain')) {
+    /**
+     * Agregamos textdomain para las traducciones
+     *
+     * @author Daniel Lucia <daniellucia84@gmail.com>
+     */
     function delete_themes_load_textdomain()
     {
         load_plugin_textdomain('delete-templates', false, dirname(plugin_basename(__FILE__)) . '/languages');
@@ -63,6 +68,12 @@ if (!function_exists('delete_themes_load_textdomain')) {
 }
 
 if (!function_exists('delete_themes_check_execute')) {
+    /**
+     * Función para borrar el directorio del theme
+     * Solo lo borra si el usuario es administrador
+     *
+     * @author Daniel Lucia <daniellucia84@gmail.com>
+     */
     function delete_themes_check_execute()
     {
         $themes = delete_themes_get_list();
@@ -98,6 +109,12 @@ if (!function_exists('delete_themes_check_execute')) {
     add_action('admin_init', 'delete_themes_check_execute');
 }
 
+/**
+ * Mostramos el html para que el usuario
+ * interactue
+ *
+ * @author Daniel Lucia <daniellucia84@gmail.com>
+ */
 function delete_themes_options_page_html()
 {
 
@@ -116,6 +133,13 @@ function delete_themes_options_page_html()
 }
 
 if (!function_exists('delete_themes_get_list')) {
+    /**
+     * Mostramos el listado de themes
+     * para poder eliminarlos de manera
+     * sencilla
+     *
+     * @author Daniel Lucia <daniellucia84@gmail.com>
+     */
     function delete_themes_get_list(): array
     {
 
@@ -140,6 +164,14 @@ if (!function_exists('delete_themes_get_list')) {
 }
 
 if (!function_exists('delete_themes_execute')) {
+    /**
+     * Borramos el directorio solo si existe
+     * como theme
+     *
+     * @param string $theme
+     * @param array $themes
+     * @author Daniel Lucia <daniellucia84@gmail.com>
+     */
     function delete_themes_execute(string $theme, array $themes)
     {
 
@@ -161,7 +193,14 @@ if (!function_exists('delete_themes_execute')) {
 
 
 if (!function_exists('delete_themes_remove_recursive')) {
-    function delete_themes_remove_recursive($directory)
+    /**
+     * Función para borrar directorios
+     * de manera recursiva
+     *
+     * @param string $directory
+     * @author Daniel Lucia <daniellucia84@gmail.com>
+     */
+    function delete_themes_remove_recursive(string $directory)
     {
         $iterator = new RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory, \FilesystemIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST);
         foreach ($iterator as $filename => $fileInfo) {
