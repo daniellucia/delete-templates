@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Plugin Name:       Eliminador de plantillas
+ * Plugin Name:       Theme remover
  * Plugin URI:        https://github.com/daniellucia/delete-templates
- * Description:       Elimina de manera sencilla las themes no usados
+ * Description:       Easily delete unused themes
  * Version:           1.0.0
  * Requires at least: 5.2
  * Requires PHP:      7.2
