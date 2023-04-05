@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Eliminador de plantillas\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-05 09:07+0000\n"
-"PO-Revision-Date: 2023-04-05 09:36+0000\n"
+"PO-Revision-Date: 2023-04-05 11:04+0000\n"
 "Last-Translator: \n"
 "Language-Team: Español\n"
 "Language: es_ES\n"
@@ -15,11 +15,11 @@ msgstr ""
 "X-Loco-Version: 2.6.4; wp-6.2\n"
 "X-Domain: delete-templates"
 
-#: includes/messages.php:18
+#: includes/messages.php:30
 msgid "An error occurred while deleting the theme"
 msgstr "Ha ocurrido un error al borrar el theme"
 
-#: includes/themes-list.php:27
+#: includes/themes-list.php:30
 msgid "Author"
 msgstr "Autor"
 
@@ -27,7 +27,7 @@ msgstr "Autor"
 msgid "Daniel Lucia"
 msgstr "Daniel Lucia"
 
-#: includes/themes-list.php:29 includes/themes-list.php:53
+#: includes/themes-list.php:32 includes/themes-list.php:63
 msgid "Delete"
 msgstr "Borrar"
 
@@ -43,28 +43,32 @@ msgstr "http://www.daniellucia.es/"
 msgid "https://github.com/daniellucia/delete-templates"
 msgstr "https://github.com/daniellucia/delete-templates"
 
-#: includes/themes-list.php:26
+#: includes/themes-list.php:29
 msgid "Name"
 msgstr "Nombre"
 
-#: includes/messages.php:8
+#: includes/themes-list.php:28
+msgid "Screenshot"
+msgstr "Previsualización"
+
+#: includes/messages.php:14
 msgid "Theme deleted successfully"
 msgstr "Theme borrado correctamente"
 
 #. Name of the plugin
-#: delete-templates.php:37 delete-templates.php:38
+#: delete-templates.php:45 delete-templates.php:46
 msgid "Theme remover"
 msgstr "Eliminador de plantillas"
 
-#: includes/themes-list.php:53
+#: includes/themes-list.php:63
 msgid "This theme is active and cannot be deleted."
 msgstr "Este theme está activo y no puede ser borrado"
 
-#: includes/themes-list.php:28
+#: includes/themes-list.php:31
 msgid "Version"
 msgstr "Versión"
 
-#: delete-templates.php:102
+#: delete-templates.php:126
 msgid ""
 "You must bear in mind that deleting a theme cannot be recovered. We "
 "recommend making a backup whenever possible."
@@ -72,6 +76,6 @@ msgstr ""
 "Debe tener en cuenta que al borrar un theme no se podrá recuperar. "
 "Recomendamos hacer backup siempre que sea posible."
 
-#: includes/themes-list.php:53
+#: includes/themes-list.php:63
 msgid "You're sure? This action can not be undone"
 msgstr "¿Estás seguro? Esta acción no se puede deshacer"
