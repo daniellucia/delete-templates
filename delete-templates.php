@@ -4,7 +4,7 @@
  * Plugin Name:       Theme remover
  * Plugin URI:        https://github.com/daniellucia/delete-templates
  * Description:       Easily delete unused themes
- * Version:           1.0.0
+ * Version:           1.0.2
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Daniel Lucia
