@@ -30,6 +30,11 @@ require_once(plugin_dir_path(__FILE__) . 'includes/messages.php');
 
 if (is_admin()) {
 
+    /**
+     * Agregamos enlace al menú de Wordpress
+     *
+     * @author Daniel Lucia <daniellucia84@gmail.com>
+     */
     function delete_themes_options_page()
     {
         add_submenu_page(
