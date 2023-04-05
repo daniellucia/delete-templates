@@ -48,23 +48,30 @@ if (is_admin()) {
     }
 }
 
+if (!function_exists('delete_themes_check_execute')) {
+    function delete_themes_check_execute()
+    {
+        $themes = delete_themes_get_list();
+
+        if (isset($_GET[DELETE_THEMES_PARAM])) {
+
+            if (!wp_verify_nonce($_REQUEST['nonce'], $_GET[DELETE_THEMES_PARAM])) {
+                wp_die("Operación no permitida");
+            }
+
+            if (delete_themes_execute($_GET[DELETE_THEMES_PARAM], $themes)) {
+                wp_redirect(DELETE_THEMES_URL);
+            }
+        }
+    }
+
+    add_action('admin_init', 'delete_themes_check_execute');
+}
+
 function delete_themes_options_page_html()
 {
 
     $themes = delete_themes_get_list();
-
-    if (isset($_GET[DELETE_THEMES_PARAM])) {
-
-        if (!wp_verify_nonce($_REQUEST['nonce'], $_GET[DELETE_THEMES_PARAM])) {
-            wp_die("Operación no permitida");
-        }
-
-        if (delete_themes_execute($_GET[DELETE_THEMES_PARAM], $themes)) {
-            $url = DELETE_THEMES_URL;
-            echo "<script>location.href = '$url';</script>";
-        }
-    }
-
     $themes_list = new Themes_List($themes);
 ?>
     <div class="wrap">
