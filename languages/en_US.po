@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Eliminador de plantillas\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-05 09:10+0000\n"
-"PO-Revision-Date: 2023-04-05 09:15+0000\n"
+"PO-Revision-Date: 2023-04-05 09:19+0000\n"
 "Last-Translator: \n"
 "Language-Team: English (United States)\n"
 "Language: en_US\n"
@@ -37,11 +37,11 @@ msgstr "Easily delete unused themes"
 
 #. Author URI of the plugin
 msgid "http://www.daniellucia.es/"
-msgstr ""
+msgstr "http://www.daniellucia.es/"
 
 #. URI of the plugin
 msgid "https://github.com/daniellucia/delete-templates"
-msgstr ""
+msgstr "https://github.com/daniellucia/delete-templates"
 
 #: includes/themes-list.php:24
 msgid "Name"
