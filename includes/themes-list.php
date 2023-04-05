@@ -21,10 +21,10 @@ class Themes_List  extends WP_List_Table
     function get_columns()
     {
         $columns = [
-            'name' => __('Name', 'delete_themes'),
-            'author'    => __('Author', 'delete_themes'),
-            'version'      => __('Version', 'delete_themes'),
-            'status'      => __('Delete', 'delete_themes'),
+            'name' => __('Name', 'delete-templates'),
+            'author'    => __('Author', 'delete-templates'),
+            'version'      => __('Version', 'delete-templates'),
+            'status'      => __('Delete', 'delete-templates'),
         ];
 
         return $columns;
@@ -48,7 +48,7 @@ class Themes_List  extends WP_List_Table
                 return $item[$column_name];
             case 'status':
                 $url = $this->get_url_delete($item['slug']);
-                return $item[$column_name] == true ? "<a href='$url' onclick='return confirm(\"¿Estás seguro? Esta acción no se puede deshacer\")'>Borrar</a>" : "Este theme está activo y no se puede borrar.";
+                return $item[$column_name] == true ? "<a href='$url' onclick='return confirm(\"" . __('You\'re sure? This action can not be undone', 'delete-templates') . "\")'>" . __('Delete', 'delete-templates') . "</a>" : __('This theme is active and cannot be deleted.', 'delete-templates');
         }
     }
 
