@@ -1,9 +1,40 @@
-# Eliminador de themes de WordPress
+# 🗑️ Delete Templates for WordPress
 
-¿Estás cansado de tener que entrar por FTP para eliminar themes de tu sitio web de WordPress? ¡Tengos la solución para ti! He creado un plugin que te permite borrar tus themes directamente desde el administrador de WordPress, sin necesidad de acceder por FTP.
+¡Hola! 👋 ¿Alguna vez te has encontrado con la frustración de no poder eliminar temas directamente desde WordPress? 😤 Bueno, ¡eso se acabó! Con **Delete Templates**, ahora puedes deshacerte de esos temas que ya no usas (o nunca usaste) de forma rápida y sencilla, directamente desde tu panel de administración. 🧹  
 
-Con este plugin, podrás eliminar themes de manera fácil y rápida. Simplemente ve al panel de administración de WordPress y busca "Eliminador de themes" dentro de "Apariencia".
+## 🔥 ¿Qué hace este plugin?
 
-No solo te ahorrará tiempo y molestias, sino que también te garantizamos que es completamente seguro de usar. El plugin ha sido probado exhaustivamente para asegurarnos de que funcione sin problemas, sin importar qué tipo de theme estés usando.
+**Delete Templates** añade una opción para eliminar temas directamente desde el panel de administración de WordPress. Nada de ir al servidor ni de trastear con archivos manualmente. Con este plugin, podrás:
 
-Así que si estás buscando una manera más fácil y rápida de eliminar tus themes de WordPress, este plugin es la respuesta que has estado buscando. Descárgalo ahora y experimenta la comodidad y eficiencia de borrar tus themes directamente desde el administrador de WordPress.
+- 🗑️ **Eliminar temas no deseados** con un solo clic.  
+- 🚀 **Simplificar el mantenimiento** de tu sitio, liberando espacio y mejorando la organización.  
+- 🛡️ **Evitar riesgos de seguridad** al eliminar temas obsoletos o no actualizados.  
+
+## 💡 ¿Por qué usar este plugin?
+
+WordPress no permite eliminar temas de forma nativa, lo que puede ser frustrante y complicado para usuarios no técnicos. Este plugin soluciona esa limitación con una interfaz clara y fácil de usar. Perfecto tanto para desarrolladores como para usuarios principiantes. 🌟  
+
+## 🛠️ Instalación
+
+1. Descarga el archivo del plugin desde este repositorio.  
+2. Sube el archivo `.zip` a tu instalación de WordPress desde el panel de administración (Plugins > Añadir nuevo > Subir plugin).  
+3. Activa el plugin y ve a **Apariencia > Eliminador de temas**. 🖱️  
+
+¡Así de simple!  
+
+## ⚠️ Advertencia
+
+Ten cuidado al eliminar temas. Una vez eliminados, no se pueden recuperar desde WordPress. Asegúrate de hacer una copia de seguridad si tienes dudas.  
+
+## 🧑‍💻 Contribuciones
+
+¿Tienes ideas para mejorar **Delete Templates**? ¿Encontraste algún problema? ¡Nos encantaría recibir tus sugerencias!  
+Por favor, abre un **issue** o envía un **pull request** en este repositorio. Toda ayuda es bienvenida. 🙌  
+
+## 📜 Licencia
+
+Este plugin está disponible bajo la [licencia MIT](LICENSE). Puedes usarlo, modificarlo y compartirlo libremente.  
+
+---
+
+💙 **Gracias por usar Delete Templates. ¡Tu feedback nos ayuda a mejorar!**  
