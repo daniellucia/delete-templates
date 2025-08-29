@@ -37,7 +37,7 @@ class DeleteThemesPlugin
     {
 
         if (is_admin()) {
-            add_action('admin_menu', [$this, 'addMenu']);
+            //add_action('admin_menu', [$this, 'addMenu']);
             add_action('admin_init', [$this, 'checkExecute']);
             add_action('admin_enqueue_scripts', [$this, 'enqueueScripts']);
         }
