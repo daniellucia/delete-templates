@@ -64,7 +64,7 @@ class Themes_List  extends WP_List_Table
         }
     }
 
-    private function get_url_delete(string $slug): string
+    public function get_url_delete(string $slug): string
     {
         $url = DELETE_THEMES_URL;
         $param = DELETE_THEMES_PARAM;

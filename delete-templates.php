@@ -4,7 +4,7 @@
  * Plugin Name:       Theme remover
  * Plugin URI:        https://github.com/daniellucia/delete-templates
  * Description:       Easily delete unused themes
- * Version:           1.0.2
+ * Version:           2.0.0
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Daniel Lucia
@@ -16,29 +16,82 @@
  * Domain Path:       /languages
  */
 
-define('DELETE_THEMES_VERSION', '0.0.1');
+define('DELETE_THEMES_VERSION', '2.0.0');
 define('DELETE_THEMES_PARAM', 'delete-item');
 define('DELETE_THEMES_PARAM_RESPONSE', 'delete-item-response');
 define('DELETE_THEMES_URL', 'themes.php?page=delete-themes');
 
-if (!class_exists('WP_List_Table')) {
-    require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
-}
+//if (!class_exists('WP_List_Table')) {
+//    require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
+//}
 
-require_once(plugin_dir_path(__FILE__) . 'includes/themes-list.php');
-require_once(plugin_dir_path(__FILE__) . 'includes/messages.php');
+//require_once(plugin_dir_path(__FILE__) . 'includes/themes-list.php');
+//require_once(plugin_dir_path(__FILE__) . 'includes/messages.php');
 
-/**
- * Solo mostramos el menú si es administrador
- */
-if (is_admin()) {
+class DeleteThemesPlugin
+{
 
-    /**
-     * Agregamos enlace al menú de Wordpress
-     *
-     * @author Daniel Lucia <daniellucia84@gmail.com>
-     */
-    function delete_themes_options_page()
+    private $version = '2.0.0';
+
+    public function __construct()
+    {
+
+        if (is_admin()) {
+            add_action('admin_menu', [$this, 'addMenu']);
+            add_action('admin_init', [$this, 'checkExecute']);
+            add_action('admin_enqueue_scripts', [$this, 'enqueueScripts']);
+        }
+
+        add_action('init', [$this, 'loadTextdomain']);
+    }
+
+    public function enqueueScripts($hook)
+    {
+
+        if ($hook !== 'themes.php') {
+            return;
+        }
+
+        wp_enqueue_script(
+            'rw-delete-themes',
+            plugin_dir_url(__FILE__) . 'assets/js/rw-delete-themes.js',
+            ['jquery'],
+            $this->version,
+            true
+        );
+
+        wp_enqueue_style(
+            'rw-delete-themes',
+            plugin_dir_url(__FILE__) . 'assets/css/rw-delete-themes.css',
+            [],
+            $this->version
+        );
+
+        // Obtenemos todos los temas instalados y pasamos enlaces a la vista
+        $themes = wp_get_themes();
+        $delete_links = [];
+
+        foreach ($themes as $slug => $theme) {
+            $delete_links[$slug] = $this->getUrlDelete($slug);
+        }
+
+        wp_localize_script('rw-delete-themes', 'RW_DELETE_THEMES', [
+            'links' => $delete_links,
+            'confirmation_text' => __('Are you sure you want to delete this template? This action cannot be undone.', 'delete-templates'),
+            'alert_text' => __('You can\'t delete the default theme.', 'delete-templates'),
+            'button_text' => __('Delete', 'delete-templates')
+        ]);
+    }
+
+    public function getUrlDelete(string $slug): string
+    {
+        $url = DELETE_THEMES_URL;
+        $param = DELETE_THEMES_PARAM;
+        $path = "$url&$param=$slug";
+        return wp_nonce_url(admin_url($path), $slug, 'nonce');
+    }
+
+    public function addMenu()
     {
         add_submenu_page(
             'themes.php',
@@ -46,55 +99,39 @@ if (is_admin()) {
             __('Theme remover', 'delete-templates'),
             'manage_options',
             'delete-themes',
-            'delete_themes_options_page_html',
+            [$this, 'optionsPageHtml']
         );
     }
 
-    add_action('admin_menu', 'delete_themes_options_page');
-}
-
-if (!function_exists('delete_themes_load_textdomain')) {
-    /**
-     * Agregamos textdomain para las traducciones
-     *
-     * @author Daniel Lucia <daniellucia84@gmail.com>
-     */
-    function delete_themes_load_textdomain()
+    public function loadTextdomain()
     {
         load_plugin_textdomain('delete-templates', false, dirname(plugin_basename(__FILE__)) . '/languages');
     }
 
-    add_action('init', 'delete_themes_load_textdomain');
-}
-
-if (!function_exists('delete_themes_check_execute')) {
-    /**
-     * Función para borrar el directorio del theme
-     * Solo lo borra si el usuario es administrador
-     *
-     * @author Daniel Lucia <daniellucia84@gmail.com>
-     */
-    function delete_themes_check_execute()
+    public function checkExecute()
     {
-        $themes = delete_themes_get_list();
+        $themes = $this->getList();
 
         if (isset($_REQUEST[DELETE_THEMES_PARAM])) {
-
             $url = DELETE_THEMES_URL . '&' . DELETE_THEMES_PARAM_RESPONSE . '=0';
 
             if (!is_admin()) {
                 wp_redirect($url);
+                exit;
             }
 
             if (!wp_verify_nonce($_REQUEST['nonce'], $_REQUEST[DELETE_THEMES_PARAM])) {
                 wp_redirect($url);
+                exit;
             }
 
-            if (delete_themes_execute($_REQUEST[DELETE_THEMES_PARAM], $themes)) {
+            if ($this->execute($_REQUEST[DELETE_THEMES_PARAM], $themes)) {
                 $url = DELETE_THEMES_URL . '&' . DELETE_THEMES_PARAM_RESPONSE . '=1';
             }
 
-            wp_redirect($url);
+            //redireccionamos a referer
+            wp_redirect(wp_get_referer() ?: $url);
+            exit;
         }
 
         if (isset($_REQUEST[DELETE_THEMES_PARAM_RESPONSE])) {
@@ -106,81 +143,58 @@ if (!function_exists('delete_themes_check_execute')) {
         }
     }
 
-    add_action('admin_init', 'delete_themes_check_execute');
-}
-
-/**
- * Mostramos el html para que el usuario
- * interactue
- *
- * @author Daniel Lucia <daniellucia84@gmail.com>
- */
-function delete_themes_options_page_html()
-{
-
-    $themes = delete_themes_get_list();
-    $themes_list = new Themes_List($themes);
-?>
-    <div class="wrap">
-        <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
-        <p style="margin: 0;"><?php echo __('You must bear in mind that deleting a theme cannot be recovered. We recommend making a backup whenever possible.', 'delete-templates'); ?></p>
-        <?php
-        $themes_list->prepare_items();
-        $themes_list->display();
-        ?>
-        <style type="text/css">
-            .wp-list-table.themes .column-screenshot {
-                width: 120px !important;
-                overflow: hidden;
-                text-align: center;
-            }
-
-            .wp-list-table.themes .column-status {
-                width: 120px !important;
-                overflow: hidden;
-                text-align: center;
-            }
-
-            .wp-list-table.themes .column-version {
-                width: 120px !important;
-            }
-
-            .wp-list-table.themes .column-status a {
-                color: #a94040;
-                text-decoration: underline;
-            }
-        </style>
-    </div>
-<?php
-}
-
-if (!function_exists('delete_themes_get_list')) {
-    /**
-     * Mostramos el listado de themes
-     * para poder eliminarlos de manera
-     * sencilla
-     *
-     * @author Daniel Lucia <daniellucia84@gmail.com>
-     */
-    function delete_themes_get_list(): array
+    public function optionsPageHtml()
     {
+        $themes = $this->getList();
+        $themes_list = new Themes_List($themes);
+        ?>
+        <div class="wrap">
+            <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
+            <p style="margin: 0;"><?php echo __('You must bear in mind that deleting a theme cannot be recovered. We recommend making a backup whenever possible.', 'delete-templates'); ?></p>
+            <?php
+            $themes_list->prepare_items();
+            $themes_list->display();
+            ?>
+            <style type="text/css">
+                .wp-list-table.themes .column-screenshot {
+                    width: 120px !important;
+                    overflow: hidden;
+                    text-align: center;
+                }
 
+                .wp-list-table.themes .column-status {
+                    width: 120px !important;
+                    overflow: hidden;
+                    text-align: center;
+                }
+
+                .wp-list-table.themes .column-version {
+                    width: 120px !important;
+                }
+
+                .wp-list-table.themes .column-status a {
+                    color: #a94040;
+                    text-decoration: underline;
+                }
+            </style>
+        </div>
+<?php
+    }
+
+    public function getList(): array
+    {
         $themes = wp_get_themes();
         $theme_active = wp_get_theme()->get('Name');
-
         $response = [];
 
         foreach ($themes as $slug => $theme) {
-
             $screenshot = '';
             if (file_exists(get_theme_root() . '/' . $slug . '/screenshot.jpg')) {
                 $screenshot = esc_url(get_theme_root_uri() . '/' . $slug . '/screenshot.jpg?ver=' . $theme->get('Version'));
             }
-
             if (file_exists(get_theme_root() . '/' . $slug . '/screenshot.png')) {
                 $screenshot = esc_url(get_theme_root_uri() . '/' . $slug . '/screenshot.png?ver=' . $theme->get('Version'));
             }
-
             $response[$slug] = [
                 'name' => $theme->get('Name'),
                 'screenshot' => $screenshot,
@@ -190,51 +204,28 @@ if (!function_exists('delete_themes_get_list')) {
                 'status' => $theme->get('Name') != $theme_active,
             ];
         }
-
-        return  $response;
+        return $response;
     }
-}
 
-if (!function_exists('delete_themes_execute')) {
-    /**
-     * Borramos el directorio solo si existe
-     * como theme
-     *
-     * @param string $theme
-     * @param array $themes
-     * @author Daniel Lucia <daniellucia84@gmail.com>
-     */
-    function delete_themes_execute(string $theme, array $themes)
+    public function execute(string $theme, array $themes)
     {
-
         if (!array_key_exists($theme, $themes)) {
             return false;
         }
-
         $theme_uri = get_theme_root() . '/' . $theme;
-
         if (is_dir($theme_uri)) {
-            delete_themes_remove_recursive($theme_uri);
-
+            $this->removeRecursive($theme_uri);
             return true;
         }
-
         return false;
     }
-}
 
-
-if (!function_exists('delete_themes_remove_recursive')) {
-    /**
-     * Función para borrar directorios
-     * de manera recursiva
-     *
-     * @param string $directory
-     * @author Daniel Lucia <daniellucia84@gmail.com>
-     */
-    function delete_themes_remove_recursive(string $directory)
+    public function removeRecursive(string $directory)
     {
-        $iterator = new RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory, \FilesystemIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST);
+        $iterator = new RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($directory, \FilesystemIterator::SKIP_DOTS),
+            \RecursiveIteratorIterator::CHILD_FIRST
+        );
         foreach ($iterator as $filename => $fileInfo) {
             if ($fileInfo->isDir()) {
                 rmdir($filename);
@@ -242,7 +233,9 @@ if (!function_exists('delete_themes_remove_recursive')) {
                 unlink($filename);
             }
         }
-
         rmdir($directory);
     }
 }
+
+// Inicializa el plugin
+new DeleteThemesPlugin();
