@@ -1,9 +1,9 @@
-.rw-delete-theme-btn {
+.delete-theme-btn {
     margin-left: 8px;
     background: #d63638 !important;
     border-color: #a72829 !important;
     color: #fff !important;
 }
-.rw-delete-theme-btn:hover {
+.delete-theme-btn:hover {
     background: #b32d2e !important;
 }

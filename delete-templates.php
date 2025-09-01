@@ -53,16 +53,16 @@ class DeleteThemesPlugin
         }
 
         wp_enqueue_script(
-            'rw-delete-themes',
-            plugin_dir_url(__FILE__) . 'assets/js/rw-delete-themes.js',
+            'delete-themes',
+            plugin_dir_url(__FILE__) . 'assets/js/delete-themes.js',
             ['jquery'],
             $this->version,
             true
         );
 
         wp_enqueue_style(
-            'rw-delete-themes',
-            plugin_dir_url(__FILE__) . 'assets/css/rw-delete-themes.css',
+            'delete-themes',
+            plugin_dir_url(__FILE__) . 'assets/css/delete-themes.css',
             [],
             $this->version
         );
@@ -75,7 +75,7 @@ class DeleteThemesPlugin
             $delete_links[$slug] = $this->getUrlDelete($slug);
         }
 
-        wp_localize_script('rw-delete-themes', 'RW_DELETE_THEMES', [
+        wp_localize_script('delete-themes', 'RW_DELETE_THEMES', [
             'links' => $delete_links,
             'confirmation_text' => __('Are you sure you want to delete this template? This action cannot be undone.', 'delete-templates'),
             'alert_text' => __('You can\'t delete the default theme.', 'delete-templates'),

@@ -8,7 +8,7 @@ jQuery(document).ready(function($) {
         if (slug && RW_DELETE_THEMES.links[slug]) {
             const $deleteBtn = $('<a/>', {
                 text: RW_DELETE_THEMES.button_text,
-                class: 'button rw-delete-theme-btn',
+                class: 'button delete-theme-btn',
                 href: RW_DELETE_THEMES.links[slug]
             });
 
