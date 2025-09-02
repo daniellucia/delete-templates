@@ -37,6 +37,12 @@ if (!class_exists('DeleteThemesPlugin')) {
             add_action('init', [$this, 'loadTextdomain']);
         }
 
+        /**
+         * Añadimos assets
+         * @param mixed $hook
+         * @return void
+         * @author Daniel Lucia
+         */
         public function enqueueScripts($hook)
         {
 
@@ -75,11 +81,22 @@ if (!class_exists('DeleteThemesPlugin')) {
             ]);
         }
 
+        /**
+         * Obtenemos url actual
+         * @return string
+         * @author Daniel Lucia
+         */
         private function current_url()
         {
             return (is_ssl() ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
         }
 
+        /**
+         * Generamos la url de eliminación del theme
+         * @param string $slug
+         * @return string
+         * @author Daniel Lucia
+         */
         public function getUrlDelete(string $slug): string
         {
             global $wp;
@@ -97,11 +114,21 @@ if (!class_exists('DeleteThemesPlugin')) {
             return wp_nonce_url($url, $slug, 'nonce');
         }
 
+        /**
+         * Cargamos el dominio de texto
+         * @return void
+         * @author Daniel Lucia
+         */
         public function loadTextdomain()
         {
             load_plugin_textdomain('delete-templates', false, dirname(plugin_basename(__FILE__)) . '/languages');
         }
 
+        /**
+         * Comprobamos si debemos ejecutar la eliminación
+         * @return void
+         * @author Daniel Lucia
+         */
         public function checkExecute()
         {
             $themes = $this->getList();
@@ -145,6 +172,11 @@ if (!class_exists('DeleteThemesPlugin')) {
             }
         }
 
+        /**
+         * Generamos la lista de themes
+         * @return array{author: array|bool|string, name: array|bool|string, screenshot: string, slug: mixed, status: bool, version: array|bool|string[]}
+         * @author Daniel Lucia
+         */
         public function getList(): array
         {
             $themes = wp_get_themes();
@@ -171,6 +203,13 @@ if (!class_exists('DeleteThemesPlugin')) {
             return $response;
         }
 
+        /**
+         * Ejecutamos la eliminación del theme
+         * @param string $theme
+         * @param array $themes
+         * @return bool
+         * @author Daniel Lucia
+         */
         public function execute(string $theme, array $themes)
         {
 
@@ -187,6 +226,12 @@ if (!class_exists('DeleteThemesPlugin')) {
             return false;
         }
 
+        /**
+         * Ejecutamos la eliminación de un directorio de forma recursiva
+         * @param string $directory
+         * @return void
+         * @author Daniel Lucia
+         */
         public function removeRecursive(string $directory)
         {
             $iterator = new RecursiveIteratorIterator(
@@ -203,7 +248,11 @@ if (!class_exists('DeleteThemesPlugin')) {
             rmdir($directory);
         }
 
-
+        /**
+         * Generamos la notificación de éxito
+         * @return void
+         * @author Daniel Lucia
+         */
         public function delete_themes_notice__success()
         {
         ?>
@@ -213,6 +262,11 @@ if (!class_exists('DeleteThemesPlugin')) {
         <?php
         }
 
+        /**
+         * Generamos la notificación de error
+         * @return void
+         * @author Daniel Lucia
+         */
         public function delete_themes_notice__error()
         {
         ?>
