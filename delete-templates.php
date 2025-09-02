@@ -143,7 +143,7 @@ if (!class_exists('DeleteThemesPlugin')) {
                 }
 
                 if (empty($_REQUEST['nonce']) || !wp_verify_nonce($_REQUEST['nonce'], $_REQUEST['delete-item'])) {
-                    wp_die(__('¡Error de seguridad! Nonce inválido o ausente.', 'delete-templates'));
+                    wp_die(__('Security error! Invalid or missing nonce.', 'delete-templates'));
                     exit;
                 }
 
