@@ -4,7 +4,7 @@
  * Plugin Name:       Theme remover
  * Plugin URI:        https://github.com/daniellucia/delete-templates
  * Description:       Easily delete unused themes
- * Version:           2.0.0
+ * Version:           2.0.5
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Daniel Lucia
@@ -16,25 +16,20 @@
  * Domain Path:       /languages
  */
 
-define('DELETE_THEMES_VERSION', '2.0.0');
+define('DELETE_THEMES_VERSION', '2.0.5');
 
-//if (!class_exists('WP_List_Table')) {
-//    require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
-//}
-
-//require_once(plugin_dir_path(__FILE__) . 'includes/themes-list.php');
 require_once(plugin_dir_path(__FILE__) . 'includes/messages.php');
 
 class DeleteThemesPlugin
 {
 
-    private $version = '2.0.0';
+    private $version = '';
 
     public function __construct()
     {
+        $this->version = DELETE_THEMES_VERSION;
 
         if (is_admin()) {
-            //add_action('admin_menu', [$this, 'addMenu']);
             add_action('admin_init', [$this, 'checkExecute']);
             add_action('admin_enqueue_scripts', [$this, 'enqueueScripts']);
         }
@@ -102,18 +97,6 @@ class DeleteThemesPlugin
         return wp_nonce_url($url, $slug, 'nonce');
     }
 
-    public function addMenu()
-    {
-        add_submenu_page(
-            'themes.php',
-            __('Theme remover', 'delete-templates'),
-            __('Theme remover', 'delete-templates'),
-            'manage_options',
-            'delete-themes',
-            [$this, 'optionsPageHtml']
-        );
-    }
-
     public function loadTextdomain()
     {
         load_plugin_textdomain('delete-templates', false, dirname(plugin_basename(__FILE__)) . '/languages');
@@ -133,7 +116,7 @@ class DeleteThemesPlugin
             }
 
             if (empty($_REQUEST['nonce']) || !wp_verify_nonce($_REQUEST['nonce'], $_REQUEST['delete-item'])) {
-                 wp_die(__('¡Error de seguridad! Nonce inválido o ausente.', 'delete-templates'));
+                wp_die(__('¡Error de seguridad! Nonce inválido o ausente.', 'delete-templates'));
                 exit;
             }
 
@@ -160,44 +143,6 @@ class DeleteThemesPlugin
                 add_action('admin_notices', 'delete_themes_notice__error');
             }
         }
-    }
-
-    public function optionsPageHtml()
-    {
-        $themes = $this->getList();
-        $themes_list = new Themes_List($themes);
-        ?>
-        <div class="wrap">
-            <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
-            <p style="margin: 0;"><?php echo __('You must bear in mind that deleting a theme cannot be recovered. We recommend making a backup whenever possible.', 'delete-templates'); ?></p>
-            <?php
-            $themes_list->prepare_items();
-            $themes_list->display();
-            ?>
-            <style type="text/css">
-                .wp-list-table.themes .column-screenshot {
-                    width: 120px !important;
-                    overflow: hidden;
-                    text-align: center;
-                }
-
-                .wp-list-table.themes .column-status {
-                    width: 120px !important;
-                    overflow: hidden;
-                    text-align: center;
-                }
-
-                .wp-list-table.themes .column-version {
-                    width: 120px !important;
-                }
-
-                .wp-list-table.themes .column-status a {
-                    color: #a94040;
-                    text-decoration: underline;
-                }
-            </style>
-        </div>
-        <?php
     }
 
     public function getList(): array
