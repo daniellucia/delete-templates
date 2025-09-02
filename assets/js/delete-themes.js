@@ -13,19 +13,14 @@ jQuery(document).ready(function($) {
             });
 
             $deleteBtn.on('click', function(e) {
-                if ($(this).parents('.theme').hasClass('active')) {
-                    alert(RW_DELETE_THEMES.alert_text);
-                    e.preventDefault();
-
-                    return;
-                }
-
                 if (!confirm(RW_DELETE_THEMES.confirmation_text)) {
                     e.preventDefault();
                 }
             });
 
-            $actions.append($deleteBtn);
+            if (!$actions.parents('.theme').hasClass('active')) {
+                $actions.append($deleteBtn);
+            }
         }
         
     });
