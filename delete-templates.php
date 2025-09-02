@@ -18,8 +18,6 @@
 
 define('DELETE_THEMES_VERSION', '2.0.5');
 
-require_once(plugin_dir_path(__FILE__) . 'includes/messages.php');
-
 if (!class_exists('DeleteThemesPlugin')) {
 
     class DeleteThemesPlugin
@@ -140,9 +138,9 @@ if (!class_exists('DeleteThemesPlugin')) {
 
             if (isset($_REQUEST['delete-item-response'])) {
                 if ((int)$_REQUEST['delete-item-response'] == 1) {
-                    add_action('admin_notices', 'delete_themes_notice__success');
+                    add_action('admin_notices', [$this, 'delete_themes_notice__success']);
                 } else {
-                    add_action('admin_notices', 'delete_themes_notice__error');
+                    add_action('admin_notices', [$this, 'delete_themes_notice__error']);
                 }
             }
         }
@@ -203,6 +201,25 @@ if (!class_exists('DeleteThemesPlugin')) {
                 }
             }
             rmdir($directory);
+        }
+
+
+        public function delete_themes_notice__success()
+        {
+        ?>
+            <div class="notice notice-success is-dismissible">
+                <p><?php _e('Theme deleted successfully', 'delete-templates'); ?></p>
+            </div>
+        <?php
+        }
+
+        public function delete_themes_notice__error()
+        {
+        ?>
+            <div class="notice notice-error is-dismissible">
+                <p><?php _e('An error occurred while deleting the theme', 'delete-templates'); ?></p>
+            </div>
+        <?php
         }
     }
 
