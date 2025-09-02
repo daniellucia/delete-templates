@@ -9,7 +9,7 @@ jQuery(document).ready(function($) {
             const $deleteBtn = $('<a/>', {
                 text: RW_DELETE_THEMES.button_text,
                 class: 'button delete-theme-btn',
-                href: RW_DELETE_THEMES.links[slug]
+                href: RW_DELETE_THEMES.links[slug].replace(/&amp;/g, '&')
             });
 
             $deleteBtn.on('click', function(e) {

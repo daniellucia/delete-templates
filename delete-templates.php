@@ -17,16 +17,13 @@
  */
 
 define('DELETE_THEMES_VERSION', '2.0.0');
-define('DELETE_THEMES_PARAM', 'delete-item');
-define('DELETE_THEMES_PARAM_RESPONSE', 'delete-item-response');
-define('DELETE_THEMES_URL', 'themes.php?page=delete-themes');
 
 //if (!class_exists('WP_List_Table')) {
 //    require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
 //}
 
 //require_once(plugin_dir_path(__FILE__) . 'includes/themes-list.php');
-//require_once(plugin_dir_path(__FILE__) . 'includes/messages.php');
+require_once(plugin_dir_path(__FILE__) . 'includes/messages.php');
 
 class DeleteThemesPlugin
 {
@@ -83,12 +80,26 @@ class DeleteThemesPlugin
         ]);
     }
 
+    private function current_url()
+    {
+        return (is_ssl() ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+    }
+
     public function getUrlDelete(string $slug): string
     {
-        $url = DELETE_THEMES_URL;
-        $param = DELETE_THEMES_PARAM;
-        $path = "$url&$param=$slug";
-        return wp_nonce_url(admin_url($path), $slug, 'nonce');
+        global $wp;
+
+        $actual = $this->current_url();
+
+        $url = add_query_arg(
+            array(
+                'delete-item' => $slug,
+                'referer' => $actual
+            ),
+            $actual
+        );
+
+        return wp_nonce_url($url, $slug, 'nonce');
     }
 
     public function addMenu()
@@ -112,30 +123,38 @@ class DeleteThemesPlugin
     {
         $themes = $this->getList();
 
-        if (isset($_REQUEST[DELETE_THEMES_PARAM])) {
-            $url = DELETE_THEMES_URL . '&' . DELETE_THEMES_PARAM_RESPONSE . '=0';
+        if (isset($_REQUEST['delete-item'])) {
+
+            $referer = isset($_REQUEST['referer']) ? esc_url_raw($_REQUEST['referer']) : admin_url('themes.php');
 
             if (!is_admin()) {
-                wp_redirect($url);
+                wp_redirect($referer);
                 exit;
             }
 
-            if (!wp_verify_nonce($_REQUEST['nonce'], $_REQUEST[DELETE_THEMES_PARAM])) {
-                wp_redirect($url);
+            if (empty($_REQUEST['nonce']) || !wp_verify_nonce($_REQUEST['nonce'], $_REQUEST['delete-item'])) {
+                 wp_die(__('¡Error de seguridad! Nonce inválido o ausente.', 'delete-templates'));
                 exit;
             }
 
-            if ($this->execute($_REQUEST[DELETE_THEMES_PARAM], $themes)) {
-                $url = DELETE_THEMES_URL . '&' . DELETE_THEMES_PARAM_RESPONSE . '=1';
+            if ($this->execute($_REQUEST['delete-item'], $themes)) {
+
+                $url = add_query_arg(
+                    array(
+                        'delete-item-response' => 1,
+                    ),
+                    $referer
+                );
             }
 
-            //redireccionamos a referer
-            wp_redirect(wp_get_referer() ?: $url);
+            //redireccionamos
+            wp_redirect($url ?: $referer);
+
             exit;
         }
 
-        if (isset($_REQUEST[DELETE_THEMES_PARAM_RESPONSE])) {
-            if ((int)$_REQUEST[DELETE_THEMES_PARAM_RESPONSE] == 1) {
+        if (isset($_REQUEST['delete-item-response'])) {
+            if ((int)$_REQUEST['delete-item-response'] == 1) {
                 add_action('admin_notices', 'delete_themes_notice__success');
             } else {
                 add_action('admin_notices', 'delete_themes_notice__error');
@@ -178,7 +197,7 @@ class DeleteThemesPlugin
                 }
             </style>
         </div>
-<?php
+        <?php
     }
 
     public function getList(): array
@@ -209,14 +228,17 @@ class DeleteThemesPlugin
 
     public function execute(string $theme, array $themes)
     {
+
         if (!array_key_exists($theme, $themes)) {
             return false;
         }
+
         $theme_uri = get_theme_root() . '/' . $theme;
         if (is_dir($theme_uri)) {
             $this->removeRecursive($theme_uri);
             return true;
         }
+
         return false;
     }
 
