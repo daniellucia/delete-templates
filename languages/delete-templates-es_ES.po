@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Eliminador de plantillas\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-05 09:07+0000\n"
-"PO-Revision-Date: 2025-08-29 15:27+0000\n"
+"PO-Revision-Date: 2025-09-02 07:32+0000\n"
 "Last-Translator: \n"
 "Language-Team: Español\n"
 "Language: es_ES\n"
@@ -15,27 +15,22 @@ msgstr ""
 "X-Loco-Version: 2.6.4; wp-6.2\n"
 "X-Domain: delete-templates"
 
-#: includes/messages.php:30
+#: delete-templates.php:274
 msgid "An error occurred while deleting the theme"
 msgstr "Ha ocurrido un error al borrar el theme"
 
-#: delete-templates.php:80
+#: delete-templates.php:78
 msgid ""
 "Are you sure you want to delete this template? This action cannot be undone."
 msgstr ""
 "¿Está seguro de que desea eliminar esta plantilla? Esta acción no se puede "
 "deshacer."
 
-#: includes/themes-list.php:30
-msgid "Author"
-msgstr "Autor"
-
 #. Author of the plugin
 msgid "Daniel Lucia"
 msgstr "Daniel Lucia"
 
-#: delete-templates.php:82 includes/themes-list.php:32
-#: includes/themes-list.php:63
+#: delete-templates.php:80
 msgid "Delete"
 msgstr "Borrar"
 
@@ -51,43 +46,18 @@ msgstr "http://www.daniellucia.es/"
 msgid "https://github.com/daniellucia/delete-templates"
 msgstr "https://github.com/daniellucia/delete-templates"
 
-#: includes/themes-list.php:29
-msgid "Name"
-msgstr "Nombre"
+#: delete-templates.php:146
+msgid "Security error! Invalid or missing nonce."
+msgstr "¡Error de seguridad! Nonce inválido o ausente."
 
-#: includes/themes-list.php:28
-msgid "Screenshot"
-msgstr "Previsualización"
-
-#: includes/messages.php:14
+#: delete-templates.php:260
 msgid "Theme deleted successfully"
 msgstr "Theme borrado correctamente"
 
 #. Name of the plugin
-#: delete-templates.php:98 delete-templates.php:99
 msgid "Theme remover"
 msgstr "Eliminador de plantillas"
 
-#: includes/themes-list.php:63
-msgid "This theme is active and cannot be deleted."
-msgstr "Este theme está activo y no puede ser borrado"
-
-#: includes/themes-list.php:31
-msgid "Version"
-msgstr "Versión"
-
-#: delete-templates.php:81
+#: delete-templates.php:79
 msgid "You can't delete the default theme."
 msgstr "No puedes eliminar el tema por defecto."
-
-#: delete-templates.php:153
-msgid ""
-"You must bear in mind that deleting a theme cannot be recovered. We "
-"recommend making a backup whenever possible."
-msgstr ""
-"Debe tener en cuenta que al borrar un theme no se podrá recuperar. "
-"Recomendamos hacer backup siempre que sea posible."
-
-#: includes/themes-list.php:63
-msgid "You're sure? This action can not be undone"
-msgstr "¿Estás seguro? Esta acción no se puede deshacer"
