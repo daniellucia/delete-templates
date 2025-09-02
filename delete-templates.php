@@ -20,189 +20,192 @@ define('DELETE_THEMES_VERSION', '2.0.5');
 
 require_once(plugin_dir_path(__FILE__) . 'includes/messages.php');
 
-class DeleteThemesPlugin
-{
+if (!class_exists('DeleteThemesPlugin')) {
 
-    private $version = '';
-
-    public function __construct()
+    class DeleteThemesPlugin
     {
-        $this->version = DELETE_THEMES_VERSION;
 
-        if (is_admin()) {
-            add_action('admin_init', [$this, 'checkExecute']);
-            add_action('admin_enqueue_scripts', [$this, 'enqueueScripts']);
+        private $version = '';
+
+        public function __construct()
+        {
+            $this->version = DELETE_THEMES_VERSION;
+
+            if (is_admin()) {
+                add_action('admin_init', [$this, 'checkExecute']);
+                add_action('admin_enqueue_scripts', [$this, 'enqueueScripts']);
+            }
+
+            add_action('init', [$this, 'loadTextdomain']);
         }
 
-        add_action('init', [$this, 'loadTextdomain']);
-    }
+        public function enqueueScripts($hook)
+        {
 
-    public function enqueueScripts($hook)
-    {
+            if ($hook !== 'themes.php') {
+                return;
+            }
 
-        if ($hook !== 'themes.php') {
-            return;
+            wp_enqueue_script(
+                'delete-themes',
+                plugin_dir_url(__FILE__) . 'assets/js/delete-themes.js',
+                ['jquery'],
+                $this->version,
+                true
+            );
+
+            wp_enqueue_style(
+                'delete-themes',
+                plugin_dir_url(__FILE__) . 'assets/css/delete-themes.css',
+                [],
+                $this->version
+            );
+
+            // Obtenemos todos los temas instalados y pasamos enlaces a la vista
+            $themes = wp_get_themes();
+            $delete_links = [];
+
+            foreach ($themes as $slug => $theme) {
+                $delete_links[$slug] = $this->getUrlDelete($slug);
+            }
+
+            wp_localize_script('delete-themes', 'RW_DELETE_THEMES', [
+                'links' => $delete_links,
+                'confirmation_text' => __('Are you sure you want to delete this template? This action cannot be undone.', 'delete-templates'),
+                'alert_text' => __('You can\'t delete the default theme.', 'delete-templates'),
+                'button_text' => __('Delete', 'delete-templates')
+            ]);
         }
 
-        wp_enqueue_script(
-            'delete-themes',
-            plugin_dir_url(__FILE__) . 'assets/js/delete-themes.js',
-            ['jquery'],
-            $this->version,
-            true
-        );
-
-        wp_enqueue_style(
-            'delete-themes',
-            plugin_dir_url(__FILE__) . 'assets/css/delete-themes.css',
-            [],
-            $this->version
-        );
-
-        // Obtenemos todos los temas instalados y pasamos enlaces a la vista
-        $themes = wp_get_themes();
-        $delete_links = [];
-
-        foreach ($themes as $slug => $theme) {
-            $delete_links[$slug] = $this->getUrlDelete($slug);
+        private function current_url()
+        {
+            return (is_ssl() ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
         }
 
-        wp_localize_script('delete-themes', 'RW_DELETE_THEMES', [
-            'links' => $delete_links,
-            'confirmation_text' => __('Are you sure you want to delete this template? This action cannot be undone.', 'delete-templates'),
-            'alert_text' => __('You can\'t delete the default theme.', 'delete-templates'),
-            'button_text' => __('Delete', 'delete-templates')
-        ]);
-    }
+        public function getUrlDelete(string $slug): string
+        {
+            global $wp;
 
-    private function current_url()
-    {
-        return (is_ssl() ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-    }
+            $actual = $this->current_url();
 
-    public function getUrlDelete(string $slug): string
-    {
-        global $wp;
+            $url = add_query_arg(
+                array(
+                    'delete-item' => $slug,
+                    'referer' => $actual
+                ),
+                $actual
+            );
 
-        $actual = $this->current_url();
+            return wp_nonce_url($url, $slug, 'nonce');
+        }
 
-        $url = add_query_arg(
-            array(
-                'delete-item' => $slug,
-                'referer' => $actual
-            ),
-            $actual
-        );
+        public function loadTextdomain()
+        {
+            load_plugin_textdomain('delete-templates', false, dirname(plugin_basename(__FILE__)) . '/languages');
+        }
 
-        return wp_nonce_url($url, $slug, 'nonce');
-    }
+        public function checkExecute()
+        {
+            $themes = $this->getList();
 
-    public function loadTextdomain()
-    {
-        load_plugin_textdomain('delete-templates', false, dirname(plugin_basename(__FILE__)) . '/languages');
-    }
+            if (isset($_REQUEST['delete-item'])) {
 
-    public function checkExecute()
-    {
-        $themes = $this->getList();
+                $referer = isset($_REQUEST['referer']) ? esc_url_raw($_REQUEST['referer']) : admin_url('themes.php');
 
-        if (isset($_REQUEST['delete-item'])) {
+                if (!is_admin()) {
+                    wp_redirect($referer);
+                    exit;
+                }
 
-            $referer = isset($_REQUEST['referer']) ? esc_url_raw($_REQUEST['referer']) : admin_url('themes.php');
+                if (empty($_REQUEST['nonce']) || !wp_verify_nonce($_REQUEST['nonce'], $_REQUEST['delete-item'])) {
+                    wp_die(__('¡Error de seguridad! Nonce inválido o ausente.', 'delete-templates'));
+                    exit;
+                }
 
-            if (!is_admin()) {
-                wp_redirect($referer);
+                if ($this->execute($_REQUEST['delete-item'], $themes)) {
+
+                    $url = add_query_arg(
+                        array(
+                            'delete-item-response' => 1,
+                        ),
+                        $referer
+                    );
+                }
+
+                //redireccionamos
+                wp_redirect($url ?: $referer);
+
                 exit;
             }
 
-            if (empty($_REQUEST['nonce']) || !wp_verify_nonce($_REQUEST['nonce'], $_REQUEST['delete-item'])) {
-                wp_die(__('¡Error de seguridad! Nonce inválido o ausente.', 'delete-templates'));
-                exit;
-            }
-
-            if ($this->execute($_REQUEST['delete-item'], $themes)) {
-
-                $url = add_query_arg(
-                    array(
-                        'delete-item-response' => 1,
-                    ),
-                    $referer
-                );
-            }
-
-            //redireccionamos
-            wp_redirect($url ?: $referer);
-
-            exit;
-        }
-
-        if (isset($_REQUEST['delete-item-response'])) {
-            if ((int)$_REQUEST['delete-item-response'] == 1) {
-                add_action('admin_notices', 'delete_themes_notice__success');
-            } else {
-                add_action('admin_notices', 'delete_themes_notice__error');
+            if (isset($_REQUEST['delete-item-response'])) {
+                if ((int)$_REQUEST['delete-item-response'] == 1) {
+                    add_action('admin_notices', 'delete_themes_notice__success');
+                } else {
+                    add_action('admin_notices', 'delete_themes_notice__error');
+                }
             }
         }
-    }
 
-    public function getList(): array
-    {
-        $themes = wp_get_themes();
-        $theme_active = wp_get_theme()->get('Name');
-        $response = [];
+        public function getList(): array
+        {
+            $themes = wp_get_themes();
+            $theme_active = wp_get_theme()->get('Name');
+            $response = [];
 
-        foreach ($themes as $slug => $theme) {
-            $screenshot = '';
-            if (file_exists(get_theme_root() . '/' . $slug . '/screenshot.jpg')) {
-                $screenshot = esc_url(get_theme_root_uri() . '/' . $slug . '/screenshot.jpg?ver=' . $theme->get('Version'));
+            foreach ($themes as $slug => $theme) {
+                $screenshot = '';
+                if (file_exists(get_theme_root() . '/' . $slug . '/screenshot.jpg')) {
+                    $screenshot = esc_url(get_theme_root_uri() . '/' . $slug . '/screenshot.jpg?ver=' . $theme->get('Version'));
+                }
+                if (file_exists(get_theme_root() . '/' . $slug . '/screenshot.png')) {
+                    $screenshot = esc_url(get_theme_root_uri() . '/' . $slug . '/screenshot.png?ver=' . $theme->get('Version'));
+                }
+                $response[$slug] = [
+                    'name' => $theme->get('Name'),
+                    'screenshot' => $screenshot,
+                    'author' => $theme->get('Author'),
+                    'version' => $theme->get('Version'),
+                    'slug' => $slug,
+                    'status' => $theme->get('Name') != $theme_active,
+                ];
             }
-            if (file_exists(get_theme_root() . '/' . $slug . '/screenshot.png')) {
-                $screenshot = esc_url(get_theme_root_uri() . '/' . $slug . '/screenshot.png?ver=' . $theme->get('Version'));
-            }
-            $response[$slug] = [
-                'name' => $theme->get('Name'),
-                'screenshot' => $screenshot,
-                'author' => $theme->get('Author'),
-                'version' => $theme->get('Version'),
-                'slug' => $slug,
-                'status' => $theme->get('Name') != $theme_active,
-            ];
+            return $response;
         }
-        return $response;
-    }
 
-    public function execute(string $theme, array $themes)
-    {
+        public function execute(string $theme, array $themes)
+        {
 
-        if (!array_key_exists($theme, $themes)) {
+            if (!array_key_exists($theme, $themes)) {
+                return false;
+            }
+
+            $theme_uri = get_theme_root() . '/' . $theme;
+            if (is_dir($theme_uri)) {
+                $this->removeRecursive($theme_uri);
+                return true;
+            }
+
             return false;
         }
 
-        $theme_uri = get_theme_root() . '/' . $theme;
-        if (is_dir($theme_uri)) {
-            $this->removeRecursive($theme_uri);
-            return true;
-        }
-
-        return false;
-    }
-
-    public function removeRecursive(string $directory)
-    {
-        $iterator = new RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($directory, \FilesystemIterator::SKIP_DOTS),
-            \RecursiveIteratorIterator::CHILD_FIRST
-        );
-        foreach ($iterator as $filename => $fileInfo) {
-            if ($fileInfo->isDir()) {
-                rmdir($filename);
-            } else {
-                unlink($filename);
+        public function removeRecursive(string $directory)
+        {
+            $iterator = new RecursiveIteratorIterator(
+                new \RecursiveDirectoryIterator($directory, \FilesystemIterator::SKIP_DOTS),
+                \RecursiveIteratorIterator::CHILD_FIRST
+            );
+            foreach ($iterator as $filename => $fileInfo) {
+                if ($fileInfo->isDir()) {
+                    rmdir($filename);
+                } else {
+                    unlink($filename);
+                }
             }
+            rmdir($directory);
         }
-        rmdir($directory);
     }
-}
 
-// Inicializa el plugin
-new DeleteThemesPlugin();
+    // Inicializa el plugin
+    new DeleteThemesPlugin();
+}
