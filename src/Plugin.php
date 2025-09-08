@@ -8,14 +8,9 @@ class Plugin
 {
     private $version = '';
 
-    public function init()
+    public function __construct()
     {
         $this->version = DELETE_THEMES_VERSION;
-
-        if (is_admin()) {
-            add_action('admin_init', [$this, 'checkExecute']);
-            add_action('admin_enqueue_scripts', [$this, 'enqueueScripts']);
-        }
     }
 
     /**
@@ -26,14 +21,13 @@ class Plugin
      */
     public function enqueueScripts($hook)
     {
-
         if ($hook !== 'themes.php') {
             return;
         }
 
         wp_enqueue_script(
             'delete-themes',
-            plugin_dir_url(__FILE__) . 'assets/js/delete-themes.js',
+            plugin_dir_url(DELETE_THEMES_FILE) . 'assets/js/delete-themes.js',
             ['jquery'],
             $this->version,
             true
@@ -41,7 +35,7 @@ class Plugin
 
         wp_enqueue_style(
             'delete-themes',
-            plugin_dir_url(__FILE__) . 'assets/css/delete-themes.css',
+            plugin_dir_url(DELETE_THEMES_FILE) . 'assets/css/delete-themes.css',
             [],
             $this->version
         );

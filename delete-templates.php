@@ -23,10 +23,16 @@ defined('ABSPATH') || exit;
 require_once __DIR__ . '/vendor/autoload.php';
 
 define('DELETE_THEMES_VERSION', '2.0.5');
+define('DELETE_THEMES_FILE', __FILE__);
 
 add_action('plugins_loaded', function () {
 
     load_plugin_textdomain('delete-templates', false, dirname(plugin_basename(__FILE__)) . '/languages');
 
-    (new Plugin())->init();
+    $plugin = new Plugin();
+
+    if (is_admin()) {
+        add_action('admin_init', [$plugin, 'checkExecute']);
+        add_action('admin_enqueue_scripts', [$plugin, 'enqueueScripts']);
+    }
 });
