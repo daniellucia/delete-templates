@@ -16,8 +16,6 @@ class Plugin
             add_action('admin_init', [$this, 'checkExecute']);
             add_action('admin_enqueue_scripts', [$this, 'enqueueScripts']);
         }
-
-        add_action('init', [$this, 'loadTextdomain']);
     }
 
     /**
@@ -95,16 +93,6 @@ class Plugin
         );
 
         return wp_nonce_url($url, $slug, 'nonce');
-    }
-
-    /**
-     * Cargamos el dominio de texto
-     * @return void
-     * @author Daniel Lucia
-     */
-    public function loadTextdomain()
-    {
-        load_plugin_textdomain('delete-templates', false, dirname(plugin_basename(__FILE__)) . '/languages');
     }
 
     /**
