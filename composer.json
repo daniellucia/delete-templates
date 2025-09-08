@@ -12,7 +12,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "DL\\TicketManager\\": "src/"
+            "DL\\DeleteTemplates\\": "src/"
         }
     },
     "config": {
