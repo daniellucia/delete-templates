@@ -9,8 +9,8 @@
  * Requires PHP:      7.2
  * Author:            Daniel Lucia
  * Author URI:        http://www.daniellucia.es/
- * License:           GPL v2 or later
- * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+ * License:     GPLv2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Update URI:        http://www.daniellucia.es/
  * Text Domain:       delete-templates
  * Domain Path:       /languages
