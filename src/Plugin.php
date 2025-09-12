@@ -74,8 +74,6 @@ class Plugin
      */
     public function getUrlDelete(string $slug): string
     {
-        global $wp;
-
         $actual = $this->current_url();
 
         $url = add_query_arg(
