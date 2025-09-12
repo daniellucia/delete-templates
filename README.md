@@ -6,7 +6,7 @@
 
 **Delete Templates** añade una opción para eliminar temas directamente desde el panel de administración de WordPress. Nada de ir al servidor ni de trastear con archivos manualmente. Con este plugin, podrás:
 
-![¿Cómo funciona?](https://www.daniellucia.es/wp-content/uploads/2025/09/delete-themes.gif)
+![¿Cómo funciona?](https://www.daniellucia.es/wp-content/uploads/2025/09/delete-templates.gif)
 
 - 🗑️ **Eliminar temas no deseados** con un solo clic.  
 - 🚀 **Simplificar el mantenimiento** de tu sitio, liberando espacio y mejorando la organización.  
