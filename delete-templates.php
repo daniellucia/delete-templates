@@ -4,7 +4,7 @@
  * Plugin Name:       Theme remover
  * Plugin URI:        https://github.com/daniellucia/delete-templates
  * Description:       Easily delete unused themes
- * Version:           2.0.5
+ * Version:           2.0.6
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Daniel Lucia
@@ -37,9 +37,19 @@ use DL\DeleteTemplates\Plugin;
 
 defined('ABSPATH') || exit;
 
-require_once __DIR__ . '/vendor/autoload.php';
+$autoload_file = __DIR__ . '/vendor/autoload.php';
+if (!file_exists($autoload_file)) {
+    add_action('admin_notices', function() {
+        echo '<div class="notice notice-error"><p>';
+        echo __('Theme Remover: Composer autoload file not found. Please run "composer install".', 'delete-templates');
+        echo '</p></div>';
+    });
+    return;
+}
 
-define('DELETE_THEMES_VERSION', '2.0.5');
+require_once $autoload_file;
+
+define('DELETE_THEMES_VERSION', '2.0.6');
 define('DELETE_THEMES_FILE', __FILE__);
 
 add_action('plugins_loaded', function () {
