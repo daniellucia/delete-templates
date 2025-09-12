@@ -29,6 +29,22 @@ class Plugin
             return;
         }
 
+        // jquery-confirm desde CDN
+        wp_enqueue_script(
+            'jquery-confirm',
+            'https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.4/jquery-confirm.min.js',
+            [],
+            $this->version,
+            true
+        );
+
+        wp_enqueue_style(
+            'jquery-confirm',
+            'https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.4/jquery-confirm.min.css',
+            [],
+            $this->version
+        );
+
         wp_enqueue_script(
             'delete-themes',
             plugin_dir_url(DELETE_THEMES_FILE) . 'assets/js/delete-themes.js',
@@ -54,9 +70,13 @@ class Plugin
 
         wp_localize_script('delete-themes', 'RW_DELETE_THEMES', [
             'links' => $delete_links,
+            'confirm_title' => __('Are you sure?', 'delete-templates'),
             'confirmation_text' => __('Are you sure you want to delete this template? This action cannot be undone.', 'delete-templates'),
             'alert_text' => __('You can\'t delete the default theme.', 'delete-templates'),
-            'button_text' => __('Delete', 'delete-templates')
+            'button_text' => __('Delete', 'delete-templates'),
+            'undone_text' => __('This action cannot be undone.', 'delete-templates'),
+            'cancel_text' => __('Cancel', 'delete-templates'),
+            'confirm_text' => __('Yes, delete it!', 'delete-templates'),
         ]);
     }
 

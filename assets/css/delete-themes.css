@@ -8,3 +8,8 @@
 .delete-theme-btn:hover {
     background: #b32d2e !important;
 }
+
+.theme.deleting {
+    opacity: 0.5;
+    pointer-events: none;
+}
