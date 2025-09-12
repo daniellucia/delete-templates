@@ -13,3 +13,13 @@
     opacity: 0.5;
     pointer-events: none;
 }
+
+body .jconfirm.jconfirm-white .jconfirm-box,
+body .jconfirm.jconfirm-light .jconfirm-box {
+    max-width: 400px;
+}
+
+body .jconfirm.jconfirm-white .jconfirm-box .jconfirm-buttons button,
+body .jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button {
+    text-transform: capitalize;
+}

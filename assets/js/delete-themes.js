@@ -23,14 +23,19 @@ jQuery(document).ready(function ($) {
                     title: RW_DELETE_THEMES.confirm_title,
                     content: RW_DELETE_THEMES.confirmation_text,
                     buttons: {
-                        confirm: function () {
-                            text: RW_DELETE_THEMES.confirm_text
-                            //window.location.href = url;
-                            themeElement.addClass('deleting');
-                        },
-                        cancel: function () {
+                        cancel: {
                             text: RW_DELETE_THEMES.cancel_text
+                        },
+
+                        confirm: {
+                            text: RW_DELETE_THEMES.confirm_text,
+                            btnClass: 'btn-red',
+                            action: function () {
+                                window.location.href = url;
+                                themeElement.addClass('deleting');
+                            }
                         }
+
                     }
                 });
             });
