@@ -25,6 +25,10 @@ class Plugin
             return;
         }
 
+        if (!current_user_can('delete_themes')) {
+            return;
+        }
+
         wp_enqueue_script(
             'delete-themes',
             plugin_dir_url(DELETE_THEMES_FILE) . 'assets/js/delete-themes.js',
@@ -79,7 +83,7 @@ class Plugin
         if (empty($slug)) {
             return '';
         }
-        
+
         $actual = $this->current_url();
 
         $url = add_query_arg(
