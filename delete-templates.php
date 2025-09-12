@@ -63,3 +63,15 @@ add_action('plugins_loaded', function () {
         add_action('admin_enqueue_scripts', [$plugin, 'enqueueScripts']);
     }
 });
+
+
+/**
+ * Limpiamos caché al activar o desactivar el plugin
+ */
+register_activation_hook(__FILE__, function() {
+    wp_cache_flush();
+});
+
+register_deactivation_hook(__FILE__, function() {
+    wp_cache_flush();
+});
