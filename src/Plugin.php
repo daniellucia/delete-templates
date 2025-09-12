@@ -74,6 +74,12 @@ class Plugin
      */
     public function getUrlDelete(string $slug): string
     {
+        $slug = sanitize_key($slug);
+        
+        if (empty($slug)) {
+            return '';
+        }
+        
         $actual = $this->current_url();
 
         $url = add_query_arg(
