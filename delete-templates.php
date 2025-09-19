@@ -52,7 +52,7 @@ require_once $autoload_file;
 define('DELETE_THEMES_VERSION', '2.5.0');
 define('DELETE_THEMES_FILE', __FILE__);
 
-add_action('plugins_loaded', function () {
+add_action('init', function () {
 
     load_plugin_textdomain('delete-templates', false, dirname(plugin_basename(__FILE__)) . '/languages');
 
